@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import asyncio
 import random
 
