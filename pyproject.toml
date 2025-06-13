@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "telega-bot"
+version = "0.1.0"
+description = "Telegram bot for English marathons"
+authors = ["kozlovachristine27@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+python-telegram-bot = "^20.0"
+
+[tool.poetry.scripts]
+start = "telega_bot:main"  # update 'main' to your actual entry point if different
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
