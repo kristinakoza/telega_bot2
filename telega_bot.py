@@ -1,6 +1,7 @@
-
 import asyncio
 import random
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 
 VOCABULARY = [
     {"word": "persistent", "meaning": "упорный", "example": "She is a persistent learner."},
@@ -19,15 +20,39 @@ VOCABULARY = [
     {"word": "resourceful", "meaning": "изобретательный", "example": "He is resourceful and always finds creative solutions."},
     {"word": "conscientious", "meaning": "добросовестный", "example": "She is a conscientious worker who never cuts corners."},
 ]
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
+
 
 TOKEN = '7269437234:AAEMtf5S6SQu1JXpITlYhGgrFzJBBInQT_I'
 
 # /start command
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    keyboard = [
+        [InlineKeyboardButton("༄˖°.☕️.ೃ࿔📚*:･ Марафоны", callback_data='join')],
+        [InlineKeyboardButton("𐙚‧₊˚📒✩ ₊˚☁️⊹♡ Бесплатная тренировка словарного запаса", callback_data='task')],
+        [InlineKeyboardButton("ℹ️ Вопросы и ответы", callback_data='faq')],
+        [InlineKeyboardButton("₊˚.🎧 ✩｡☕ 🤎 Уроки по английскому", callback_data='lessons')],
+        [InlineKeyboardButton("˙✧˖°🎓 ༘⋆｡ ° Курсы по английскому", callback_data='courses')]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    await update.message.reply_text("ˎˊ˗⋆｡°✩📄Привет! Что тебя интересует?", reply_markup=reply_markup)
+
+async def back(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    keyboard = [
+        [InlineKeyboardButton("❓ Есть ли место для занятий?", callback_data='faq_place')],
+        [InlineKeyboardButton(" 💵Сколько стоит занятие?", callback_data='faq_price')],
+        [InlineKeyboardButton(" 📚Есть ли пробное занятие?", callback_data='faq_prob')],
+        [InlineKeyboardButton("❓Что за курс по английскому?", callback_data='faq_course')],
+        [InlineKeyboardButton("📚Хочу посмотреть отзывы", callback_data='faq_reviews')],
+        [InlineKeyboardButton("📝📚🙆🏻‍♀️О Кристине", callback_data='faq_kristina')],
+        [InlineKeyboardButton("⬅️ Назад", callback_data='back_to_menu')]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    await update.message.reply_text("📌 Часто задаваемые вопросы:", reply_markup=reply_markup)
+
 async def button(update: Update, context: ContextTypes.DEFAULT_TYPE): 
     query = update.callback_query
     await query.answer()
+    pass
 
     if query.data == 'join':
         back_button = InlineKeyboardMarkup([[InlineKeyboardButton("⬅️ Назад", callback_data='back_to_menu')]])
