@@ -2,7 +2,7 @@
 name = "telega-bot"
 version = "0.1.0"
 description = "Telegram bot for English marathons"
-authors = ["kozlovachristine27@gmail.com>"]
+authors = ["Kristina Koza <kozlovachristine27@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.11"
