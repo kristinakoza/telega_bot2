@@ -1,20 +1,7 @@
 import asyncio
 import random
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
-from telegram.ext import ApplicationBuilder
-
-async def post_stop(app: Application) -> None:
-    await app.updater.stop()
-    await app.stop()
-    await app.shutdown()
-
-app = (
-    ApplicationBuilder()
-    .token(TOKEN)
-    .post_stop(post_stop)  # Proper cleanup
-    .build()
-)
+from telegram.ext import Application, ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 
 VOCABULARY = [
     {"word": "persistent", "meaning": "упорный", "example": "She is a persistent learner."},
@@ -34,9 +21,12 @@ VOCABULARY = [
     {"word": "conscientious", "meaning": "добросовестный", "example": "She is a conscientious worker who never cuts corners."},
 ]
 
-
 TOKEN = '7269437234:AAEMtf5S6SQu1JXpITlYhGgrFzJBBInQT_I'
 
+async def post_stop(app: Application) -> None:
+    await app.updater.stop()
+    await app.stop()
+    await app.shutdown()
 # /start command
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
@@ -65,7 +55,6 @@ async def back(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def button(update: Update, context: ContextTypes.DEFAULT_TYPE): 
     query = update.callback_query
     await query.answer()
-    pass
 
     if query.data == 'join':
         back_button = InlineKeyboardMarkup([[InlineKeyboardButton("⬅️ Назад", callback_data='back_to_menu')]])
@@ -159,9 +148,19 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
 
 # Run the bot
-app = ApplicationBuilder().token(TOKEN).build()
-app.add_handler(CommandHandler("start", start))
-app.add_handler(CallbackQueryHandler(button))
-app.add_handler(CommandHandler("back", back))
+def main():
+    app = (
+        ApplicationBuilder()
+        .token(TOKEN)
+        .post_stop(post_stop)
+        .build()
+    )
+    
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CallbackQueryHandler(button))
+    app.add_handler(CommandHandler("back", back))
+    
+    app.run_polling()
 
-app.run_polling()
+if __name__ == '__main__':
+    main()
