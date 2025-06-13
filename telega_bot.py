@@ -2,6 +2,19 @@ import asyncio
 import random
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
+from telegram.ext import ApplicationBuilder
+
+async def post_stop(app: Application) -> None:
+    await app.updater.stop()
+    await app.stop()
+    await app.shutdown()
+
+app = (
+    ApplicationBuilder()
+    .token(TOKEN)
+    .post_stop(post_stop)  # Proper cleanup
+    .build()
+)
 
 VOCABULARY = [
     {"word": "persistent", "meaning": "упорный", "example": "She is a persistent learner."},
